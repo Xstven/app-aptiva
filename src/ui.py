@@ -203,12 +203,17 @@ def pasos(items: list[tuple[str, str, str]]) -> None:
     st.markdown(f'<div class="grid grid-3">{tarjetas}</div>', unsafe_allow_html=True)
 
 
-def kpis(items: list[tuple[str, str, str, str, str]]) -> None:
-    tarjetas = "".join(
-        f'<div class="card kpi"><div class="bar" style="background:{c}"></div>'
-        f'<div class="ico" style="background:{c}1A;color:{c}">{ico}</div>'
-        f'<div class="lbl">{_h(lbl)}</div><div class="val">{_h(val)}</div><div class="sub">{_h(sub)}</div></div>'
-        for ico, lbl, val, sub, c in items)
+def kpis(items: list[tuple]) -> None:
+    tarjetas = ""
+    for item in items:
+        if len(item) == 5:
+            ico, lbl, val, sub, c = item
+        else:
+            lbl, val, sub, c = item
+            ico = ""
+        tarjetas += (f'<div class="card kpi"><div class="bar" style="background:{c}"></div>'
+                     f'<div class="ico" style="background:{c}1A;color:{c}">{ico}</div>'
+                     f'<div class="lbl">{_h(lbl)}</div><div class="val">{_h(val)}</div><div class="sub">{_h(sub)}</div></div>')
     st.markdown(f'<div class="grid grid-4">{tarjetas}</div>', unsafe_allow_html=True)
 
 
