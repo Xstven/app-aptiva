@@ -314,7 +314,7 @@ def pagina_dashboard():
         ui.hero("Panel del docente", "Resultados de los estudiantes",
                 "Consulta el desempeño de cada estudiante y los promedios del grupo.")
     else:
-        ui.hero("Mis resultados", "Dashboard de desempeño",
+        ui.hero("Mis resultados", "desempeño",
                 "Consulta tus resultados, tu evolución y el diagnóstico generado por la IA.")
     aviso = st.session_state.pop("aviso_ia", None)
     if aviso is not None:
