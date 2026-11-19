@@ -116,10 +116,10 @@ def grafico_radar(resultados: list[dict], promedio: list[dict] | None = None) ->
 
 
 def pagina_inicio():
-    ui.hero("Uniagustiniana · Departamento de Ciencias Básicas",
-            "Evaluación diagnóstica de Matemáticas con Inteligencia Artificial",
+    ui.hero("Uniagustiniana",
+            "Evaluación diagnóstica con Inteligencia Artificial",
             "Presenta la prueba, conoce tu nivel en cada componente y recibe un plan de estudio personalizado.",
-            ["30 preguntas", "3 componentes", "Calificación inmediata", "Diagnóstico con Gemini AI"])
+            ["30 preguntas", "3 componentes", "Diagnóstico con Gemini AI"])
     ui.pasos([
         ("Selección aleatoria", "10 preguntas de Estadística, 10 de Geometría y 10 de Cálculo y Álgebra, distintas en cada intento.", ui.AZUL),
         ("Calificación automática", "Puntaje global sobre 30 y porcentaje de acierto en cada componente.", ui.VERDE),
@@ -198,7 +198,7 @@ def pagina_prueba():
             ("Recibe tu diagnóstico", "Al enviar verás tu puntaje, tus gráficas y el análisis de la IA.", ui.VERDE),
         ])
         st.write("")
-        if st.button("🚀  Iniciar prueba", type="primary", width="stretch"):
+        if st.button(" Iniciar prueba", type="primary", width="stretch"):
             try:
                 st.session_state.examen = iniciar_examen(est["id_estudiante"], ID_MATERIA_MATEMATICAS)
             except db.ErrorBancoPreguntas as e:
@@ -328,7 +328,7 @@ def pagina_dashboard():
         acceso_denegado("Ingresa como estudiante o docente para ver resultados.")
         return
     if rol == "docente":
-        tab_est, tab_glob = st.tabs(["👤  Por estudiante", "🏫  Vista general"])
+        tab_est, tab_glob = st.tabs(["Por estudiante", "Vista general"])
     else:
         tab_est, tab_glob = st.container(), None
 
