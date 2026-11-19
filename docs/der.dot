@@ -1,0 +1,37 @@
+digraph DER {
+  graph [rankdir=LR, fontname="Helvetica", bgcolor="white", nodesep=0.5, ranksep=0.9, pad=0.3, label="Modelo Entidad-Relación (PostgreSQL / Neon) — Sistema Adaptativo de Evaluación Diagnóstica con IA", labelloc=t, fontsize=18];
+  node [shape=plain, fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=10, color="#374151", arrowhead=crow, arrowtail=tee, dir=both];
+  Materias [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#1E3A8A"><font color="white"><b>Materias</b></font></td></tr>
+   <tr><td align="left">🔑 id_materia INT</td></tr><tr><td align="left">nombre_materia VARCHAR UQ</td></tr><tr><td align="left">creditos INT</td></tr><tr><td align="left">nivel_prioridad INT</td></tr><tr><td align="left">descripcion TEXT</td></tr><tr><td align="left">activa BOOLEAN</td></tr></table>>];
+  Componentes [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#1E3A8A"><font color="white"><b>Componentes</b></font></td></tr>
+   <tr><td align="left">🔑 id_componente INT</td></tr><tr><td align="left">🔗 id_materia INT</td></tr><tr><td align="left">nombre_componente VARCHAR</td></tr><tr><td align="left">descripcion TEXT</td></tr><tr><td align="left">preguntas_por_examen INT</td></tr></table>>];
+  Opciones_Respuesta [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#059669"><font color="white"><b>Opciones_Respuesta</b> (tabla adicional)</font></td></tr>
+   <tr><td align="left">🔑 id_opcion INT</td></tr><tr><td align="left">🔗 id_pregunta INT</td></tr><tr><td align="left">letra CHAR(1) A–D</td></tr><tr><td align="left">texto VARCHAR</td></tr><tr><td align="left">es_correcta BOOLEAN (máx. 1)</td></tr></table>>];
+  Nivel_Dificultad [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#1E3A8A"><font color="white"><b>Nivel_Dificultad</b></font></td></tr>
+   <tr><td align="left">🔑 id_nivel INT</td></tr><tr><td align="left">nombre_nivel VARCHAR UQ</td></tr><tr><td align="left">descripcion TEXT</td></tr><tr><td align="left">peso NUMERIC</td></tr></table>>];
+  Preguntas [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#1E3A8A"><font color="white"><b>Preguntas</b></font></td></tr>
+   <tr><td align="left">🔑 id_pregunta INT</td></tr><tr><td align="left">🔗 id_componente INT</td></tr><tr><td align="left">🔗 id_nivel INT</td></tr><tr><td align="left">enunciado TEXT UQ</td></tr><tr><td align="left">activa BOOLEAN</td></tr><tr><td align="left">fecha_creacion TIMESTAMPTZ</td></tr></table>>];
+  Estudiantes [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#1E3A8A"><font color="white"><b>Estudiantes</b></font></td></tr>
+   <tr><td align="left">🔑 id_estudiante INT</td></tr><tr><td align="left">documento VARCHAR UQ</td></tr><tr><td align="left">nombres VARCHAR</td></tr><tr><td align="left">apellidos VARCHAR</td></tr><tr><td align="left">correo VARCHAR UQ</td></tr><tr><td align="left">programa VARCHAR</td></tr><tr><td align="left">semestre INT</td></tr><tr><td align="left">fecha_registro TIMESTAMPTZ</td></tr></table>>];
+  Examenes [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#D97706"><font color="white"><b>Examenes</b></font></td></tr>
+   <tr><td align="left">🔑 id_examen INT</td></tr><tr><td align="left">🔗 id_estudiante INT</td></tr><tr><td align="left">🔗 id_materia INT</td></tr><tr><td align="left">fecha_inicio / fecha_fin TIMESTAMPTZ</td></tr><tr><td align="left">tiempo_segundos INT</td></tr><tr><td align="left">puntaje_total INT</td></tr><tr><td align="left">total_preguntas INT</td></tr><tr><td align="left">estado VARCHAR</td></tr></table>>];
+  Detalle_Examen [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#D97706"><font color="white"><b>Detalle_Examen</b></font></td></tr>
+   <tr><td align="left">🔑 id_detalle INT</td></tr><tr><td align="left">🔗 id_examen INT</td></tr><tr><td align="left">🔗 id_pregunta INT</td></tr><tr><td align="left">orden INT</td></tr><tr><td align="left">🔗 id_opcion_seleccionada INT</td></tr><tr><td align="left">es_correcta BOOLEAN</td></tr></table>>];
+  Resultados_Componente [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#D97706"><font color="white"><b>Resultados_Componente</b></font></td></tr>
+   <tr><td align="left">🔑 id_resultado INT</td></tr><tr><td align="left">🔗 id_examen INT</td></tr><tr><td align="left">🔗 id_componente INT</td></tr><tr><td align="left">aciertos INT</td></tr><tr><td align="left">total_preguntas INT</td></tr><tr><td align="left">porcentaje NUMERIC</td></tr></table>>];
+  Diagnosticos_IA [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4"><tr><td bgcolor="#7C3AED"><font color="white"><b>Diagnosticos_IA</b></font></td></tr>
+   <tr><td align="left">🔑 id_diagnostico INT</td></tr><tr><td align="left">🔗 id_examen INT UQ</td></tr><tr><td align="left">fortalezas TEXT</td></tr><tr><td align="left">debilidades TEXT</td></tr><tr><td align="left">plan_estudio TEXT</td></tr><tr><td align="left">resumen_enviado JSONB</td></tr><tr><td align="left">modelo_ia VARCHAR</td></tr><tr><td align="left">tiempo_respuesta_s NUMERIC</td></tr><tr><td align="left">fecha_generacion TIMESTAMPTZ</td></tr></table>>];
+  Materias -> Componentes [label="1 : N"];
+  Componentes -> Preguntas [label="1 : N"];
+  Nivel_Dificultad -> Preguntas [label="1 : N"];
+  Estudiantes -> Examenes [label="1 : N"];
+  Materias -> Examenes [label="1 : N"];
+  Examenes -> Detalle_Examen [label="1 : N (30)"];
+  Preguntas -> Opciones_Respuesta [label="1 : 4"];
+  Preguntas -> Detalle_Examen [label="1 : N"];
+  Opciones_Respuesta -> Detalle_Examen [label="1 : N (opción elegida)"];
+  Examenes -> Resultados_Componente [label="1 : N (3)"];
+  Componentes -> Resultados_Componente [label="1 : N"];
+  Examenes -> Diagnosticos_IA [label="1 : 1", arrowhead=tee];
+}

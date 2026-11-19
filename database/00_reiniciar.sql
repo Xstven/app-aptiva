@@ -1,0 +1,12 @@
+DROP VIEW  IF EXISTS vw_historial_estudiante;
+DROP VIEW  IF EXISTS vw_banco_por_componente;
+DROP TABLE IF EXISTS diagnosticos_ia        CASCADE;
+DROP TABLE IF EXISTS resultados_componente  CASCADE;
+DROP TABLE IF EXISTS detalle_examen         CASCADE;
+DROP TABLE IF EXISTS examenes               CASCADE;
+DROP TABLE IF EXISTS estudiantes            CASCADE;
+DROP TABLE IF EXISTS opciones_respuesta     CASCADE;
+DROP TABLE IF EXISTS preguntas              CASCADE;
+DROP TABLE IF EXISTS nivel_dificultad       CASCADE;
+DROP TABLE IF EXISTS componentes            CASCADE;
+DROP TABLE IF EXISTS materias               CASCADE;
