@@ -133,7 +133,7 @@ def pagina_inicio():
         return
 
     ui.titulo_seccion("Ingresar", "Elige cómo vas a entrar al sistema.")
-    tab_e, tab_d = st.tabs(["🎓  Soy estudiante", "👩‍🏫  Soy docente"])
+    tab_e, tab_d = st.tabs(["🎓  Soy estudiante", "Soy docente"])
     with tab_e:
         with st.form("form_registro"):
             a, b = st.columns(2)
@@ -209,10 +209,10 @@ def pagina_prueba():
 
     preguntas = ex["preguntas"]
     ui.kpis([
-        ("📝", "Examen", f"N.º {ex['id_examen']}", "Intento registrado", ui.AZUL),
-        ("❓", "Preguntas", str(len(preguntas)), "10 por componente", "#8B5CF6"),
-        ("🧩", "Componentes", "3", "Estadística · Geometría · Cálculo", ui.VERDE),
-        ("⏱️", "Inicio", time.strftime("%I:%M %p", time.localtime(ex["inicio"])), "Hora de inicio", ui.AMBAR),
+        ("Examen", f"N.º {ex['id_examen']}", "Intento registrado", ui.AZUL),
+        ("Preguntas", str(len(preguntas)), "10 por componente", "#8B5CF6"),
+        ("Componentes", "3", "Estadística · Geometría · Cálculo", ui.VERDE),
+        ("Inicio", time.strftime("%I:%M %p", time.localtime(ex["inicio"])), "Hora de inicio", ui.AMBAR),
     ])
     st.write("")
 
@@ -234,7 +234,7 @@ def pagina_prueba():
                                  label_visibility="collapsed", width="stretch")
         st.write("")
         confirmar = st.checkbox("Confirmo que deseo enviar mis respuestas (las preguntas sin responder cuentan como incorrectas).")
-        enviar = st.form_submit_button("✅  Enviar y calificar", type="primary", width="stretch")
+        enviar = st.form_submit_button("Enviar y calificar", type="primary", width="stretch")
 
     if enviar:
         if not confirmar:
@@ -274,9 +274,9 @@ def mostrar_resultado(id_examen: int):
     nivel, color_nivel = ui.nivel_desempeno(pct)
     mejor = max(res, key=lambda r: r["porcentaje"])
     ui.kpis([
-        ("🎯", "Puntaje global", f"{ex['puntaje_total']} / {ex['total_preguntas']}", f"{pct} % de acierto", ui.AZUL),
-        ("🏅", "Nivel de desempeño", nivel, "Meta: 60 % o más", color_nivel),
-        ("⭐", "Mejor componente", mejor["nombre_componente"], f"{mejor['porcentaje']:.0f} % de acierto",
+        ("Puntaje global", f"{ex['puntaje_total']} / {ex['total_preguntas']}", f"{pct} % de acierto", ui.AZUL),
+        ("Nivel de desempeño", nivel, "Meta: 60 % o más", color_nivel),
+        ("Mejor componente", mejor["nombre_componente"], f"{mejor['porcentaje']:.0f} % de acierto",
          ui.color_componente(mejor["nombre_componente"])),
         ("⏱️", "Tiempo empleado", fmt_tiempo(ex["tiempo_segundos"]), ex["fecha_inicio"], "#8B5CF6"),
     ])
@@ -291,7 +291,7 @@ def mostrar_resultado(id_examen: int):
     g1.plotly_chart(grafico_barras(res), width="stretch", config={"displayModeBar": False})
     g2.plotly_chart(grafico_radar(res, prom), width="stretch", config={"displayModeBar": False})
 
-    ui.titulo_seccion("🤖 Diagnóstico pedagógico", "Análisis personalizado de tu desempeño.")
+    ui.titulo_seccion("Diagnóstico pedagógico", "Análisis personalizado de tu desempeño.")
     if diag:
         ui.etiqueta_ia(diag)
         st.write("")
@@ -300,7 +300,7 @@ def mostrar_resultado(id_examen: int):
         st.info("Sin diagnóstico registrado.")
 
     st.write("")
-    with st.expander("📋  Ver detalle de respuestas"):
+    with st.expander("Ver detalle de respuestas"):
         df = pd.DataFrame(det)
         df["Resultado"] = df["es_correcta"].map({True: "✅", False: "❌"})
         df = df.rename(columns={"orden": "#", "nombre_componente": "Componente", "nombre_nivel": "Nivel",
@@ -357,7 +357,7 @@ def pagina_dashboard():
         st.write("")
         mostrar_resultado(sel["id_examen"])
         if len(hist) > 1:
-            ui.titulo_seccion("📈 Evolución", "Puntaje obtenido en cada intento.")
+            ui.titulo_seccion("Evolución", "Puntaje obtenido en cada intento.")
             dfh = pd.DataFrame(list(reversed(hist)))
             dfh["intento"] = [f"Intento {i}<br><sub>{f[5:16]}</sub>" for i, f in enumerate(dfh["fecha_inicio"], start=1)]
             fig = go.Figure(go.Scatter(x=dfh["intento"], y=dfh["puntaje_total"], mode="lines+markers+text",
@@ -380,10 +380,10 @@ def pagina_dashboard():
             prom = db.promedios_globales(con)
         st.write("")
         ui.kpis([
-            ("📝", "Pruebas finalizadas", str(rg["examenes"] or 0), "Total de intentos", ui.AZUL),
-            ("👥", "Estudiantes", str(rg["estudiantes"] or 0), "Evaluados", "#8B5CF6"),
-            ("🎯", "Puntaje promedio", f"{rg['promedio'] or 0} / 30", "Todos los intentos", ui.VERDE),
-            ("⏱️", "Tiempo promedio", f"{rg['minutos'] or 0} min", "Por prueba", ui.AMBAR),
+            ("Pruebas finalizadas", str(rg["examenes"] or 0), "Total de intentos", ui.AZUL),
+            ("Estudiantes", str(rg["estudiantes"] or 0), "Evaluados", "#8B5CF6"),
+            ("Puntaje promedio", f"{rg['promedio'] or 0} / 30", "Todos los intentos", ui.VERDE),
+            ("Tiempo promedio", f"{rg['minutos'] or 0} min", "Por prueba", ui.AMBAR),
         ])
         if prom:
             st.write("")
@@ -413,7 +413,7 @@ def pagina_banco():
         por_comp = df.groupby("nombre_componente")["total"].sum()
         ui.kpis([(ui.ICONOS_COMPONENTE.get(c, "•"), c, str(int(por_comp.get(c, 0))), "preguntas",
                   ui.color_componente(c)) for c in [x["nombre_componente"] for x in comps]] +
-                [("🗂️", "Total", str(total), "en el banco", "#8B5CF6")])
+                [("Total", str(total), "en el banco", "#8B5CF6")])
         ui.titulo_seccion("Distribución por nivel de dificultad")
         piv = df.pivot_table(index="nombre_componente", columns="nombre_nivel", values="total", aggfunc="sum", fill_value=0)
         piv["Total"] = piv.sum(axis=1)
@@ -426,7 +426,7 @@ def pagina_banco():
                      hide_index=True, width="stretch", height=320)
 
     st.write("")
-    with st.expander("➕  Agregar una pregunta nueva"):
+    with st.expander("Agregar una pregunta nueva"):
         with st.form("form_nueva", clear_on_submit=True, border=False):
             a, b = st.columns(2)
             c = a.selectbox("Componente", comps, format_func=lambda c: c["nombre_componente"])
@@ -456,9 +456,9 @@ def main():
 
     with st.sidebar:
         ui.marca_sidebar()
-        etiquetas = {"Inicio": "🏠  Inicio", "Presentar prueba": "📝  Presentar prueba",
-                     "Dashboard": "📊  Mis resultados" if st.session_state.rol == "estudiante" else "📊  Resultados",
-                     "Banco de preguntas": "📚  Banco de preguntas"}
+        etiquetas = {"Inicio": "Inicio", "Presentar prueba": "Presentar prueba",
+                     "Dashboard": "Mis resultados" if st.session_state.rol == "estudiante" else "Resultados",
+                     "Banco de preguntas": "Banco de preguntas"}
         claves = PAGINAS_POR_ROL[st.session_state.rol]
         if st.session_state.pagina not in claves:
             st.session_state.pagina = "Inicio"
